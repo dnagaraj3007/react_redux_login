@@ -3,6 +3,8 @@ import TextField from '@material-ui/core/TextField';
 
 import React, { Component } from 'react';
 
+import './TextInput.css'
+
 class TextInput extends Component{
 
 	
@@ -16,6 +18,7 @@ class TextInput extends Component{
 			variant = {this.props.variant}
 			InputProps={this.props.inputProps}
 			onChange = {this.props.onChange}
+			className = 'TextInput'
 			>
 			</TextField>
 			)
