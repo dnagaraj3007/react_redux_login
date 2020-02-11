@@ -1,4 +1,3 @@
-import { InputAdornment, withStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 
 import React, { Component } from 'react';
@@ -18,6 +17,8 @@ class TextInput extends Component{
 			variant = {this.props.variant}
 			InputProps={this.props.inputProps}
 			onChange = {this.props.onChange}
+			error ={this.props.error}
+			helperText = {this.props.helperText}
 			className = 'TextInput'
 			>
 			</TextField>

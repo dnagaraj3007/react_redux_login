@@ -40,10 +40,56 @@ class SignUp extends Component{
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+
+	validateEmail(email) 
+		{
+ 		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+  			return true
+  		else
+  			return false;
+		}
+
+	validateElement(name, value){
+		let errors = this.state.errors;
+		if(typeof value !=='object'){
+		switch(name){
+			case 'name':
+				errors.name = value.length<5? 'Name must be atleast 5 charaters length': ''
+				break;
+			case 'email':
+				errors.email = this.validateEmail(value)? '': 'Please enter valid email'
+				break;
+			case 'password':
+				errors.password = value.length<8 ? 'Password must atleast be 8 characters':''
+				break;
+			default:
+				break;
+		}
+	}
+		return errors;
+	}
+
+	formValidation(){
+		for(var i in this.state){
+			let errors = this.validateElement(i, this.state[i]);
+			this.setState({
+			errors
+			})
+		}
+
+		for(var i in this.state.errors){
+			if(this.state.errors[i] !='')
+				return false;
+		}
+		return true;
+	}
+
 	onChange(event){
 		event.preventDefault();
 		const {name, value} = event.target;
+		let errors = this.validateElement(name, value)
 		this.setState({
+			errors,
 			[name] : value
 		})
 	}
@@ -56,6 +102,11 @@ class SignUp extends Component{
 
 	onSubmit(event){
 		event.preventDefault();
+		if(this.formValidation()){
+			console.log('valid form')
+		}else{
+			console.log("INVALID", this.state.errors)
+		}
 	}
 
 	render(){
@@ -72,6 +123,8 @@ class SignUp extends Component{
 				label='Name' 
 				variant ='outlined' 
 				value = {this.state.name}
+				error={this.state.errors.name? true: false}
+				helperText = {this.state.errors.name}
 				onChange = {this.onChange}/>
 
 			</div>
@@ -81,6 +134,8 @@ class SignUp extends Component{
 				label='Email' 
 				variant ='outlined' 
 				value = {this.state.email}
+				error={this.state.errors.email? true: false}
+				helperText = {this.state.errors.email}
 				onChange = {this.onChange}/>
 
 			</div>
@@ -92,6 +147,8 @@ class SignUp extends Component{
 				type = {this.state.isPasswordMasked? 'password': 'text'}
 				variant = 'outlined'
 				value = {this.state.password}
+				error={this.state.errors.password? true: false}
+				helperText = {this.state.errors.password}
 				onChange = {this.onChange}
 				inputProps = {{
           		  	endAdornment: (
